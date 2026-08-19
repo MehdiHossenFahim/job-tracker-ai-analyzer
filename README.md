@@ -34,7 +34,7 @@ Applying for jobs gets messy fast. This tool keeps everything in one place—tra
 
 Click the preview image below to watch the full walkthrough on Google Drive:
 
-## [![Job Application Tracker Demo](./screenshots/03_dashboard.png)](https://drive.google.com/file/d/14g7EnomUxazFwJuDcH1-HnZL2CXMTPvW/view?usp=sharing)
+## [![Job Application Tracker Demo](./screenshots/03_dashboard.png)](https://drive.google.com/file/d/1yrUAFleGMep7ciem8bF79zTVbx_zkuRv/view?usp=sharing)
 
 ## Features
 
