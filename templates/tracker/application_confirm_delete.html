@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Delete Application · Job Tracker{% endblock %}
+{% block content %}
+<div class="card p-4" style="max-width: 500px; margin: 2rem auto;">
+    <h4>Delete Application</h4>
+    <p>Are you sure you want to delete <strong>{{ application.job_title }}</strong> at <strong>{{ application.company_name }}</strong>? This will also delete its interviews and AI analyses. This cannot be undone.</p>
+    <form method="post">
+        {% csrf_token %}
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-danger">Yes, Delete</button>
+            <a href="{% url 'tracker:application_detail' application.pk %}" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

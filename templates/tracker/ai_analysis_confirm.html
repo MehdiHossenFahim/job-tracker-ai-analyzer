@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}AI Analysis · Job Tracker{% endblock %}
+{% block content %}
+    <div class="card p-4" style="max-width: 600px; margin: 2rem auto;">
+        <h4><i class="bi bi-stars"></i> AI Job Description Analyzer</h4>
+        <p class="text-muted">
+            This will send the job description for <strong>{{ application.job_title }}</strong> at
+            <strong>{{ application.company_name }}</strong> to Claude (Anthropic API) and extract:
+        </p>
+        <ul class="text-muted">
+            <li>Job summary</li>
+            <li>Required skills</li>
+            <li>Required experience level</li>
+            <li>Key technologies</li>
+            <li>Interview preparation suggestions</li>
+            <li>Likely interview questions</li>
+        </ul>
+        {% if not application.job_description %}
+            <div class="alert alert-warning">This application has no job description yet. Add one before running the analysis.</div>
+        {% endif %}
+        <!-- Loading State Banner -->
+        <div id="ai-loading-status"
+             class="alert alert-info d-none align-items-center gap-2 my-3"
+             role="alert">
+            <div class="spinner-border spinner-border-sm text-primary"
+                 role="status"
+                 aria-hidden="true"></div>
+            <span>Analyzing job description with Claude... This may take a few seconds.</span>
+        </div>
+        <form method="post" id="ai-analysis-form">
+            {% csrf_token %}
+            <div class="d-flex gap-2">
+                <button type="submit"
+                        id="submit-btn"
+                        class="btn btn-primary"
+                        {% if not application.job_description %}disabled{% endif %}>
+                    <span id="btn-text"><i class="bi bi-stars"></i> Run Analysis</span>
+                    <span id="btn-spinner" class="d-none">
+                        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                        Analyzing...
+                    </span>
+                </button>
+                <a href="{% url 'tracker:application_detail' application.pk %}"
+                   id="cancel-btn"
+                   class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+    <script>
+    document.getElementById('ai-analysis-form').addEventListener('submit', function() {
+        const submitBtn = document.getElementById('submit-btn');
+        const cancelBtn = document.getElementById('cancel-btn');
+        const btnText = document.getElementById('btn-text');
+        const btnSpinner = document.getElementById('btn-spinner');
+        const loadingStatus = document.getElementById('ai-loading-status');
+
+        // Toggle button states
+        submitBtn.disabled = true;
+        cancelBtn.classList.add('disabled');
+        btnText.classList.add('d-none');
+        btnSpinner.classList.remove('d-none');
+
+        // Show status message banner
+        loadingStatus.classList.remove('d-none');
+        loadingStatus.classList.add('d-flex');
+    });
+    </script>
+{% endblock %}

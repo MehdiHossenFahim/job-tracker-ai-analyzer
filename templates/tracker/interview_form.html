@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}{% if is_edit %}Edit{% else %}Add{% endif %} Interview · Job Tracker{% endblock %}
+{% block content %}
+    <!-- Header Section -->
+    <div class="d-flex flex-column mb-4">
+        <h2 class="fw-bold tracking-tight mb-1">{% if is_edit %}Edit Interview{% else %}Add Interview{% endif %}</h2>
+        <p class="text-muted mb-0">
+            Position: <span class="fw-medium text-dark">{{ application.job_title }}</span> at <span class="fw-medium text-dark">{{ application.company_name }}</span>
+        </p>
+    </div>
+    <!-- Main Form Card -->
+    <div class="card p-4 p-md-5 mb-5 shadow-sm" style="max-width: 680px;">
+        <form method="post" novalidate>
+            {% csrf_token %}
+            <div class="row g-4">
+                <!-- Interview Date & Time -->
+                <div class="col-md-6">
+                    <label class="form-label text-muted small fw-semibold text-uppercase tracking-wider mb-1">
+                        {{ form.interview_date.label }} <span class="text-danger">*</span>
+                    </label>
+                    {{ form.interview_date }}
+                    {% if form.interview_date.errors %}
+                        <div class="text-danger small mt-1">{{ form.interview_date.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                <!-- Interview Type / Round -->
+                <div class="col-md-6">
+                    <label class="form-label text-muted small fw-semibold text-uppercase tracking-wider mb-1">
+                        {{ form.interview_type.label }} <span class="text-danger">*</span>
+                    </label>
+                    {{ form.interview_type }}
+                    {% if form.interview_type.errors %}
+                        <div class="text-danger small mt-1">{{ form.interview_type.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                <!-- Meeting Link -->
+                <div class="col-12">
+                    <label class="form-label text-muted small fw-semibold text-uppercase tracking-wider mb-1">
+                        {{ form.meeting_link.label }}
+                    </label>
+                    {{ form.meeting_link }}
+                    <div class="form-text text-muted small mt-1">
+                        <i class="bi bi-camera-video me-1"></i> Optional link for Google Meet, Zoom, or Teams.
+                    </div>
+                    {% if form.meeting_link.errors %}
+                        <div class="text-danger small mt-1">{{ form.meeting_link.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                <!-- Notes -->
+                <div class="col-12">
+                    <label class="form-label text-muted small fw-semibold text-uppercase tracking-wider mb-1">
+                        {{ form.notes.label }}
+                    </label>
+                    {{ form.notes }}
+                    {% if form.notes.errors %}
+                        <div class="text-danger small mt-1">{{ form.notes.errors.0 }}</div>
+                    {% endif %}
+                </div>
+            </div>
+            <!-- Action Buttons -->
+            <div class="mt-4 pt-3 border-top d-flex gap-2 justify-content-end">
+                <a href="{% url 'tracker:application_detail' application.pk %}"
+                   class="btn btn-light border fw-medium px-4">Cancel</a>
+                <button type="submit" class="btn btn-primary fw-medium px-4">
+                    {% if is_edit %}Save Changes{% else %}Add Interview{% endif %}
+                </button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

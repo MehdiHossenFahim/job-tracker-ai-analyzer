@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}Job Application Tracker{% endblock %}</title>
+        <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}"
+              rel="stylesheet">
+        <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.min.css' %}"
+              rel="stylesheet">
+        <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+    </head>
+    <body class="d-flex flex-column min-vh-100 bg-light">
+        {% if user.is_authenticated %}
+            <nav class="navbar navbar-expand-lg navbar-modern sticky-top mb-4">
+                <div class="container">
+                    <a class="navbar-brand d-flex align-items-center gap-2"
+                       href="{% url 'tracker:dashboard' %}">
+                        <i class="bi bi-briefcase-fill fs-5"></i>
+                        <span>Job Tracker</span>
+                    </a>
+                    <button class="navbar-toggler border-0 shadow-none"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#navMenu">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navMenu">
+                        <ul class="navbar-nav me-auto ms-lg-4 gap-lg-1">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'tracker:dashboard' %}">
+                                    <i class="bi bi-grid-1x2 me-1"></i> Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'tracker:application_list' %}">
+                                    <i class="bi bi-list-task me-1"></i> Applications
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="d-flex align-items-center gap-3">
+                            <a class="nav-link nav-btn-primary d-inline-flex align-items-center gap-1"
+                               href="{% url 'tracker:application_create' %}">
+                                <i class="bi bi-plus-lg"></i> New Application
+                            </a>
+                            <div class="vr opacity-25 d-none d-lg-block"></div>
+                            <span class="text-muted small fw-medium d-flex align-items-center gap-1">
+                                <i class="bi bi-person-circle"></i> {{ user.username }}
+                            </span>
+                            <form action="{% url 'accounts:logout' %}" method="post" class="m-0">
+                                {% csrf_token %}
+                                <button class="btn btn-sm btn-outline-secondary rounded-2" type="submit">Logout</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        {% endif %}
+        <!-- Toast Notifications Container -->
+        {% if messages %}
+            <div class="toast-container position-fixed top-0 end-0 p-3"
+                 style="z-index: 1085">
+                {% for message in messages %}
+                    <div class="toast align-items-center text-bg-{% if message.tags == 'error' %}danger{% else %}{{ message.tags|default:'success' }}{% endif %} border-0 show shadow"
+                         role="alert"
+                         aria-live="assertive"
+                         aria-atomic="true">
+                        <div class="d-flex">
+                            <div class="toast-body fw-medium d-flex align-items-center gap-2">
+                                {% if message.tags == 'success' %}
+                                    <i class="bi bi-check-circle-fill fs-6"></i>
+                                {% elif message.tags == 'error' or message.tags == 'danger' %}
+                                    <i class="bi bi-exclamation-triangle-fill fs-6"></i>
+                                {% else %}
+                                    <i class="bi bi-info-circle-fill fs-6"></i>
+                                {% endif %}
+                                {{ message }}
+                            </div>
+                            <button type="button"
+                                    class="btn-close btn-close-white me-2 m-auto"
+                                    data-bs-dismiss="toast"
+                                    aria-label="Close"></button>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <!-- Main Content Area -->
+        <main class="container flex-grow-1 pb-5">
+            {% block content %}{% endblock %}
+        </main>
+        <!-- Footer -->
+        <footer class="mt-auto py-3 bg-white border-top">
+            <div class="container text-center">
+                <p class="text-muted small mb-0">
+                    &copy; {% now "Y" %} Job Tracker · Developed by <span class="fw-semibold text-dark">Mehedi Hossen Fahim</span>
+                </p>
+            </div>
+        </footer>
+        <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+        <!-- Auto-dismiss Toasts after 4 seconds -->
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const toastElements = document.querySelectorAll('.toast');
+                toastElements.forEach(toastEl => {
+                    const toast = new bootstrap.Toast(toastEl, { delay: 4000 });
+                    toast.show();
+                });
+            });
+        </script>
+    </body>
+</html>

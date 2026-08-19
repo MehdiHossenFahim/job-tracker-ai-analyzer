@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Sign Up · Job Tracker{% endblock %}
+{% block content %}
+    <div class="d-flex justify-content-center align-items-center py-5">
+        <div class="card p-4 p-md-5 shadow-sm"
+             style="max-width: 440px;
+                    width: 100%">
+            <!-- Brand Header -->
+            <div class="text-center mb-4">
+                <div class="d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary rounded-circle mb-3"
+                     style="width: 48px;
+                            height: 48px">
+                    <i class="bi bi-briefcase-fill fs-4"></i>
+                </div>
+                <h3 class="fw-bold text-dark mb-1">Create Account</h3>
+                <p class="text-muted small mb-0">Join Job Tracker to start organizing your applications</p>
+            </div>
+            <!-- Non-field / Form-level Errors -->
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger d-flex align-items-center gap-2 small py-2 px-3 mb-4"
+                     role="alert">
+                    <i class="bi bi-exclamation-circle-fill flex-shrink-0"></i>
+                    <div>
+                        {% for error in form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+            <!-- Registration Form -->
+            <form method="post" novalidate>
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="mb-3">
+                        <label class="form-label text-muted small fw-semibold text-uppercase tracking-wider mb-1"
+                               for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}
+                            <div class="form-text text-muted small mt-1">{{ field.help_text|safe }}</div>
+                        {% endif %}
+                        {% for error in field.errors %}
+                            <div class="text-danger small mt-1 d-flex align-items-center gap-1">
+                                <i class="bi bi-exclamation-circle"></i> {{ error }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+                <button type="submit"
+                        class="btn btn-primary w-100 fw-medium py-2 mt-2 shadow-sm">Create Account</button>
+            </form>
+            <!-- Footer Link -->
+            <div class="text-center mt-4 pt-3 border-top">
+                <p class="text-muted small mb-0">
+                    Already have an account?
+                    <a href="{% url 'accounts:login' %}"
+                       class="fw-semibold text-primary text-decoration-none">Log in</a>
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

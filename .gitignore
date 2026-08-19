@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+generate_screenshots.py
+generate_demo_video.py
+
+
+# Virtual env
+venv/
+env/
+.venv/
+
+# Django
+db.sqlite3
+db.sqlite3-journal
+staticfiles/
+media/
+*.log
+
+# Env vars / secrets
+.env
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+demo_video/
